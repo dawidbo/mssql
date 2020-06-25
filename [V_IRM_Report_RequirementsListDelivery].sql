@@ -1,12 +1,13 @@
 USE [TRM]
 GO
 
-/****** Object:  View [dbo].[V_IRM_Report_RequirementsListDelivery]    Script Date: 23-06-2020 1:25:54 PM ******/
+/****** Object:  View [dbo].[V_IRM_Report_RequirementsListDelivery]    Script Date: 25-06-2020 1:38:22 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 -- =============================================
@@ -85,11 +86,9 @@ LEFT JOIN (
 			FROM [dbo].[V_IRM_Shipments_Delivery] ISD
 			WHERE ISD.RequirementID = IRS.RequirementID AND ISD.[ALU Code] = IRS.[ALU Code]
 			FOR XML PATH('')),1,1,'') AS [Delivery required by]
-		,IRS.[Delivery required by]
 		,[ALU Code]
 		,SUM([QTY Shipped]) AS [QTY Shipped]
 	FROM [dbo].[V_IRM_Shipments_Delivery] IRS
-	--where irs.RequirementID = 425
 	GROUP BY RequirementID, [ALU Code] 
 ) DLVRS ON REQ.RequirementID = DLVRS.[RequirementID] AND AC.[ALU Code] = DLVRS.[ALU Code] AND FST.[QTY] = DLVRS.[QTY Shipped]
 GO
